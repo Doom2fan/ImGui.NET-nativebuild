@@ -1,0 +1,70 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build_native_linux:
+    name: Build native on linux
+    runs-on: ubuntu-16.04
+
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          submodules: recursive
+
+      - name: Build
+        run: ./ci-build.sh
+
+      - uses: actions/upload-artifact@master
+        with:
+          name: cimgui.so
+          path: cimgui/build/Release/cimgui.so
+
+  build_native_macos:
+    name: Build native on macOS
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          submodules: recursive
+
+      - name: Build
+        run: ./ci-build.sh
+
+      - uses: actions/upload-artifact@master
+        with:
+          name: cimgui.dylib
+          path: cimgui/build/Release/cimgui.dylib
+
+  build_native_windows:
+    name: Build native on Windows
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          submodules: recursive
+
+      - name: setup-msbuild
+        uses: microsoft/setup-msbuild@v1
+
+      - name: Build
+        shell: cmd
+        run: call .\ci-build.cmd
+
+      - uses: actions/upload-artifact@master
+        with:
+          name: cimgui.win-x64.dll
+          path: cimgui\build\x64\Release\cimgui.win-x64.dll
+
+      - uses: actions/upload-artifact@master
+        with:
+          name: cimgui.win-x86.dll
+          path: cimgui\build\x86\Release\cimgui.win-x86.dll
