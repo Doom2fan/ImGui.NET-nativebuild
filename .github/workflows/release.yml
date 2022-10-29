@@ -8,7 +8,7 @@ on:
 jobs:
   build_native_linux:
     name: Build native on linux
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@master
@@ -68,7 +68,7 @@ jobs:
 
   make_release:
     name: Make release
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-latest
     needs: [build_native_linux, build_native_macos, build_native_windows]
 
     steps:
